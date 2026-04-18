@@ -37,14 +37,14 @@ export default function SplashScreen({ onDone }: Props) {
   const [progress, setProgress] = useState(0);
   const [bootLines, setBootLines] = useState<string[]>([]);
 
-  const logoText = useGlitchText('NEXUS', phase === 'logo' || phase === 'tagline' || phase === 'fade' ? 0 : 9999);
-  const tagText = useGlitchText('ИГРОВОЙ МЕССЕНДЖЕР', phase === 'tagline' || phase === 'fade' ? 0 : 9999);
+  const logoText = useGlitchText('GhostNet', phase === 'logo' || phase === 'tagline' || phase === 'fade' ? 0 : 9999);
+  const tagText = useGlitchText('АНОНИМНЫЙ МЕССЕНДЖЕР', phase === 'tagline' || phase === 'fade' ? 0 : 9999);
 
   const BOOT_LINES = [
     '> Инициализация протокола связи...',
     '> Загрузка криптомодуля... OK',
     '> Проверка анонимного туннеля... OK',
-    '> Подключение к NEXUS-сети...',
+    '> Подключение к GhostNet...',
     '> Все системы в норме. Добро пожаловать.',
   ];
 
@@ -136,21 +136,26 @@ export default function SplashScreen({ onDone }: Props) {
           }} />
 
         {/* Logo */}
-        <div className="relative">
+        <div className="relative flex flex-col items-center gap-3"
+          style={{ opacity: phase === 'boot' ? 0 : 1, transition: 'opacity 0.4s ease' }}>
+          <img
+            src="https://cdn.poehali.dev/projects/30f34ae1-20eb-404a-b020-2dea0489c572/bucket/9cf7cce9-224c-40a7-8ab8-ff79c8bb5cef.png"
+            alt="GhostNet"
+            className="animate-float"
+            style={{ width: '96px', height: '96px', objectFit: 'contain', filter: 'drop-shadow(0 0 24px rgba(0,255,231,0.4)) drop-shadow(0 0 60px rgba(191,0,255,0.3))' }}
+          />
           <h1
-            className="font-orbitron font-black text-7xl tracking-widest select-none"
+            className="font-orbitron font-black text-6xl tracking-widest select-none"
             style={{
               color: 'var(--neon-cyan)',
               textShadow: '0 0 20px var(--neon-cyan), 0 0 60px rgba(0,255,231,0.4), 0 0 100px rgba(0,255,231,0.15)',
-              letterSpacing: '0.2em',
-              opacity: phase === 'boot' ? 0 : 1,
-              transition: 'opacity 0.4s ease',
+              letterSpacing: '0.15em',
             }}
           >
             {logoText}
           </h1>
           {/* Underline scan */}
-          <div className="mt-1 h-[2px] w-full"
+          <div className="h-[2px] w-full"
             style={{
               background: 'linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-purple), transparent)',
               boxShadow: '0 0 8px var(--neon-cyan)',
@@ -197,7 +202,7 @@ export default function SplashScreen({ onDone }: Props) {
       <div className="absolute bottom-16 left-10 right-10">
         <div className="flex justify-between font-rajdhani text-xs mb-1"
           style={{ color: 'rgba(0,255,231,0.3)' }}>
-          <span>ЗАГРУЗКА СИСТЕМЫ</span>
+          <span>ЗАГРУЗКА GHOSTNET</span>
           <span>{Math.floor(progress)}%</span>
         </div>
         <div className="h-[3px] w-full rounded-full overflow-hidden"

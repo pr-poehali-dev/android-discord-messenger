@@ -82,15 +82,13 @@ export default function AuthScreen({ onAuth }: Props) {
         <div className="px-8 pt-8 pb-8">
           {/* Logo */}
           <div className="flex flex-col items-center gap-1 mb-7">
-            <div className="w-14 h-14 flex items-center justify-center rounded-2xl mb-1"
-              style={{
-                background: 'rgba(0,255,231,0.08)',
-                border: '1px solid rgba(0,255,231,0.2)',
-                boxShadow: '0 0 20px rgba(0,255,231,0.1)',
-              }}>
-              <span className="font-orbitron font-black text-2xl neon-text-cyan">NX</span>
-            </div>
-            <h1 className="font-orbitron font-black text-xl tracking-widest neon-text-cyan">NEXUS</h1>
+            <img
+              src="https://cdn.poehali.dev/projects/30f34ae1-20eb-404a-b020-2dea0489c572/bucket/9cf7cce9-224c-40a7-8ab8-ff79c8bb5cef.png"
+              alt="GhostNet"
+              className="animate-float"
+              style={{ width: '64px', height: '64px', objectFit: 'contain', filter: 'drop-shadow(0 0 12px rgba(0,255,231,0.5)) drop-shadow(0 0 30px rgba(191,0,255,0.3))' }}
+            />
+            <h1 className="font-orbitron font-black text-xl tracking-widest neon-text-cyan">GhostNet</h1>
             <p className="font-rajdhani text-xs tracking-[0.25em] uppercase" style={{ color: 'rgba(0,255,231,0.35)' }}>
               {mode === 'login' ? 'Добро пожаловать назад' : 'Создать аккаунт'}
             </p>

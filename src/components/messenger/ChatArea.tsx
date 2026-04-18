@@ -4,10 +4,10 @@ import type { Message, Channel, DirectChat, ViewMode, Server } from '@/pages/Mes
 
 interface Props {
   messages: Message[];
-  channel: Channel;
+  channel: Channel | null;
   dm: DirectChat | null;
   viewMode: ViewMode;
-  server: Server;
+  server: Server | null;
   showMembers: boolean;
   onToggleMembers: () => void;
   onSendMessage: (text: string) => void;
@@ -54,10 +54,10 @@ export default function ChatArea({
     }
   };
 
-  const title = viewMode === 'dm' ? dm?.name : `#${channel.name}`;
+  const title = viewMode === 'dm' ? dm?.name : (channel ? `#${channel.name}` : 'Выбери канал');
   const subtitle = viewMode === 'dm'
     ? (dm?.isGroup ? `${dm.members?.length} участников` : 'Личное сообщение')
-    : `Канал сервера ${server.name}`;
+    : (server ? `Канал сервера ${server.name}` : 'GhostNet');
 
   const quickEmojis = ['🔥', '⚡', '💀', '🤯', '👾', '✋', '🎮', '🏆'];
 
@@ -79,7 +79,7 @@ export default function ChatArea({
           ) : (
             <div className="w-8 h-8 flex items-center justify-center rounded-lg"
               style={{ background: 'var(--surface2)', border: '1px solid rgba(0,255,231,0.15)' }}>
-              <Icon name={channel.type === 'voice' ? 'Volume2' : channel.type === 'announcement' ? 'Megaphone' : 'Hash'} size={16}
+              <Icon name={channel?.type === 'voice' ? 'Volume2' : channel?.type === 'announcement' ? 'Megaphone' : 'Hash'} size={16}
                 className="text-gray-300" />
             </div>
           )}
@@ -90,7 +90,7 @@ export default function ChatArea({
         </div>
 
         <div className="flex items-center gap-2">
-          {channel.type === 'voice' && (
+          {channel?.type === 'voice' && (
             <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-rajdhani font-bold tracking-wider transition-all"
               style={{ background: 'var(--neon-cyan)', color: 'var(--dark-bg)' }}>
               <Icon name="Mic" size={13} />
@@ -119,12 +119,35 @@ export default function ChatArea({
       <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-1"
         style={{ background: 'var(--dark-bg)' }}>
 
-        {/* Day separator */}
-        <div className="flex items-center gap-3 my-3">
-          <div className="flex-1 h-[1px]" style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,231,0.15))' }} />
-          <span className="text-xs text-gray-600 font-rajdhani tracking-wider">Сегодня</span>
-          <div className="flex-1 h-[1px]" style={{ background: 'linear-gradient(90deg, rgba(0,255,231,0.15), transparent)' }} />
-        </div>
+        {/* Empty state */}
+        {!channel && !dm && (
+          <div className="flex flex-col items-center justify-center h-full gap-4 opacity-30">
+            <img src="https://cdn.poehali.dev/projects/30f34ae1-20eb-404a-b020-2dea0489c572/bucket/9cf7cce9-224c-40a7-8ab8-ff79c8bb5cef.png"
+              alt="ghost" className="w-20 h-20 animate-float" style={{ filter: 'grayscale(0.5)' }} />
+            <div className="text-center">
+              <p className="font-orbitron font-bold text-gray-600 text-lg">GhostNet</p>
+              <p className="font-rajdhani text-gray-700 text-sm mt-1">Выбери канал или чат слева</p>
+            </div>
+          </div>
+        )}
+
+        {(channel || dm) && messages.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-full gap-3 opacity-40">
+            <Icon name="MessageSquare" size={36} className="text-gray-700" />
+            <p className="font-rajdhani text-gray-600 text-sm">Пока тихо... Напиши первым!</p>
+          </div>
+        )}
+
+        {messages.length > 0 && (
+          <>
+            {/* Day separator */}
+            <div className="flex items-center gap-3 my-3">
+              <div className="flex-1 h-[1px]" style={{ background: 'linear-gradient(90deg, transparent, rgba(0,255,231,0.15))' }} />
+              <span className="text-xs text-gray-600 font-rajdhani tracking-wider">Сегодня</span>
+              <div className="flex-1 h-[1px]" style={{ background: 'linear-gradient(90deg, rgba(0,255,231,0.15), transparent)' }} />
+            </div>
+          </>
+        )}
 
         {messages.map((msg, idx) => {
           const isMe = msg.authorId === 'me';
@@ -201,6 +224,7 @@ export default function ChatArea({
         <div ref={messagesEndRef} />
       </div>
 
+
       {/* Input area */}
       <div className="px-4 py-3 flex-shrink-0" style={{ background: 'var(--dark-bg)' }}>
         {/* Quick emoji */}
@@ -227,7 +251,7 @@ export default function ChatArea({
             value={inputValue}
             onChange={e => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={`Написать в ${viewMode === 'dm' ? dm?.name : '#' + channel.name}...`}
+            placeholder={`Написать в ${viewMode === 'dm' ? dm?.name : (channel ? '#' + channel.name : 'канал')}...`}
             className="flex-1 bg-transparent outline-none text-sm text-gray-200 placeholder-gray-600 font-rubik"
           />
           <div className="flex items-center gap-1 flex-shrink-0">
