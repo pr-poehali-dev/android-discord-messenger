@@ -7,6 +7,7 @@ export default {
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
+			"./1776529132933145459.html"
 	],
 	prefix: "",
 	theme: {
@@ -86,9 +87,20 @@ export default {
 					}
 				}
 			},
+			fontFamily: {
+				orbitron: ['Orbitron', 'sans-serif'],
+				rajdhani: ['Rajdhani', 'sans-serif'],
+				rubik: ['Rubik', 'sans-serif'],
+			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-cyan': 'pulse-cyan 2s ease-in-out infinite',
+				'pulse-purple': 'pulse-purple 2s ease-in-out infinite',
+				'float': 'float 3s ease-in-out infinite',
+				'fade-in-up': 'fadeInUp 0.3s ease-out forwards',
+				'slide-in-left': 'slideInLeft 0.25s ease-out forwards',
+				'slide-in-right': 'slideInRight 0.25s ease-out forwards',
 			}
 		}
 	},
