@@ -10,6 +10,8 @@ interface Props {
   onSelectChannel: (c: Channel) => void;
   onSelectDM: (dm: DirectChat) => void;
   onOpenModeration: () => void;
+  username?: string;
+  avatar?: string;
 }
 
 const roleColor: Record<string, string> = {
@@ -26,7 +28,8 @@ const channelTypeIcon: Record<string, string> = {
 
 export default function ChannelsSidebar({
   server, dms, selectedChannel, selectedDM, viewMode,
-  onSelectChannel, onSelectDM, onOpenModeration
+  onSelectChannel, onSelectDM, onOpenModeration,
+  username = 'NightRider_X', avatar = '🤖',
 }: Props) {
   return (
     <div className="w-56 flex flex-col flex-shrink-0 relative"
@@ -146,25 +149,25 @@ export default function ChannelsSidebar({
       </div>
 
       {/* User profile bottom */}
-      <ProfileBarInline />
+      <ProfileBarInline username={username} avatar={avatar} />
     </div>
   );
 }
 
-function ProfileBarInline() {
+function ProfileBarInline({ username, avatar }: { username: string; avatar: string }) {
   return (
     <div className="flex items-center gap-2 px-3 py-2 border-t"
       style={{ borderColor: 'rgba(0,255,231,0.08)', background: 'var(--dark-bg)' }}>
       <div className="relative">
         <div className="w-8 h-8 rounded-lg flex items-center justify-center text-lg"
           style={{ background: 'var(--surface2)', border: '1px solid rgba(0,255,231,0.3)' }}>
-          🤖
+          {avatar}
         </div>
         <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2"
           style={{ background: '#00ffe7', borderColor: 'var(--dark-bg)' }} />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs font-rajdhani font-bold tracking-wider neon-text-cyan truncate">NightRider_X</p>
+        <p className="text-xs font-rajdhani font-bold tracking-wider neon-text-cyan truncate">{username}</p>
         <p className="text-xs text-gray-600 truncate">Анонимный</p>
       </div>
       <button className="w-6 h-6 flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity">

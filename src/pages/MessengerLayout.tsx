@@ -172,7 +172,11 @@ const generateMessages = (channelName: string): Message[] => [
   },
 ];
 
-export default function MessengerLayout() {
+interface LayoutProps {
+  user?: { username: string; avatar: string } | null;
+}
+
+export default function MessengerLayout({ user }: LayoutProps) {
   const [selectedServer, setSelectedServer] = useState<Server>(MOCK_SERVERS[0]);
   const [selectedChannel, setSelectedChannel] = useState<Channel>(MOCK_SERVERS[0].channels[0]);
   const [selectedDM, setSelectedDM] = useState<DirectChat | null>(null);
@@ -180,6 +184,9 @@ export default function MessengerLayout() {
   const [showMembers, setShowMembers] = useState(true);
   const [showModeration, setShowModeration] = useState(false);
   const [messages, setMessages] = useState<Message[]>(generateMessages('общий'));
+
+  const myName = user?.username ?? 'NightRider_X';
+  const myAvatar = user?.avatar ?? '🤖';
 
   const handleSelectServer = (server: Server) => {
     setSelectedServer(server);
@@ -207,8 +214,8 @@ export default function MessengerLayout() {
     const newMsg: Message = {
       id: `msg_${Date.now()}`,
       authorId: 'me',
-      authorName: 'NightRider_X',
-      authorAvatar: '🤖',
+      authorName: myName,
+      authorAvatar: myAvatar,
       authorRole: 'owner',
       content: text,
       timestamp: new Date().toLocaleTimeString('ru', { hour: '2-digit', minute: '2-digit' }),
@@ -227,7 +234,7 @@ export default function MessengerLayout() {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[var(--dark-bg)] relative scanlines">
+    <div className="flex overflow-hidden bg-[var(--dark-bg)] relative scanlines" style={{ width: '100vw', height: '100vh' }}>
       {/* Ambient background blobs */}
       <div className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-5 pointer-events-none"
         style={{ background: 'radial-gradient(circle, var(--neon-cyan) 0%, transparent 70%)', transform: 'translate(-30%, -30%)' }} />
@@ -256,6 +263,8 @@ export default function MessengerLayout() {
         onSelectChannel={handleSelectChannel}
         onSelectDM={handleSelectDM}
         onOpenModeration={handleOpenModeration}
+        username={myName}
+        avatar={myAvatar}
       />
 
       {/* Main chat */}
